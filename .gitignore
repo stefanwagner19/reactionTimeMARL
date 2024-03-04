@@ -68,3 +68,4 @@
 # Crashlytics generated file
 **/crashlytics-build.properties
 
+!**/.gitkeep
