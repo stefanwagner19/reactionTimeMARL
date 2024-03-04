@@ -1,19 +1,17 @@
 **/[Tt]emp/
 **/[Oo]bj/
-**/[Bb]uild/
-**/[Bb]uilds/
+**/[Bb]uild/*/
 **/[Ll]ibrary/
 **/[Ll]ogs/
 **/[Uu]ser[Ss]ettings/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain sensitive data.
-**/[Mm]emoryCaptures/
+*/[Mm]emoryCaptures/
 
 # ============ #
 # Visual Studio / Rider #
 # ============ #
-**/[Ee]xported[Oo]bj/
 **.vs/
 **.vscode/
 **.user
@@ -44,16 +42,6 @@
 **/[Tt]humbs.db
 **/Desktop.ini
 
-# ============ #
-# Builds #
-# ============ #
-# Exclude all build folders and files by default.
-# Add exceptions below.
-**/[Bb]uilds/
-**/[Bb]uild/
-# Uncomment if you need to check-in your build folders
-# !/[Bb]uilds/**/*.meta
-
 # =============== #
 # Misc #
 # =============== #
@@ -67,5 +55,3 @@
 
 # Crashlytics generated file
 **/crashlytics-build.properties
-
-!**/.gitkeep
