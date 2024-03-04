@@ -12,24 +12,25 @@
 # ============ #
 # Visual Studio / Rider #
 # ============ #
-**.vs/
-**.vscode/
-**.user
-**.userprefs
-**.unityproj
-**.csproj
-**.sln
-**.suo
-**.tmp
-**.userprefs
-**.pidb
-**.booproj
-**.svd
-**.idea/
-**.pdb
-**.mdb
-**.opendb
-**.VC.db
+*/[Ee]xported[Oo]bj/
+*.vs/
+*.vscode/
+*.user
+*.userprefs
+*.unityproj
+*.csproj
+*.sln
+*.suo
+*.tmp
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.idea/
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
 
 # =============== #
 # OS generated files #
