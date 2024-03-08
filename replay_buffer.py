@@ -86,7 +86,7 @@ class ReplayBuffer(object):
 		if self.__max_len > self.__total_counter - 1:
 			potential_indices = np.arange(self.__total_counter - 1)
 		else:
-			potential_indices = np.concatenate((np.arange(0, self.__counter - 1), np.arange(self.__counter, self.max_len))) 
+			potential_indices = np.concatenate((np.arange(0, self.__counter - 1), np.arange(self.__counter, self.__max_len))) 
 		self.__batch_indices = np.random.choice(potential_indices, self.__batch_size)
 
 	def retrieve_actor_info(self, agent: int) -> tuple[npt.NDArray]:
@@ -100,9 +100,9 @@ class ReplayBuffer(object):
 
 	def retrieve_critic_info(self, agent: int) -> tuple[npt.NDArray]:
 		actions = self.__actions[self.__batch_indices, :].reshape(self.__batch_size, -1)
-		next_actions = self.__actions[self.__batch_indices + 1, :].reshape(self.__batch_size, -1)
+		next_actions = self.__actions[(self.__batch_indices + 1)%self.__max_len, :].reshape(self.__batch_size, -1)
 		state = self.__state[self.__batch_indices, agent].reshape(self.__batch_size, -1)
-		next_state = self.__state[self.__batch_indices + 1, agent].reshape(self.__batch_size, -1)
+		next_state = self.__state[(self.__batch_indices + 1)%self.__max_len, agent].reshape(self.__batch_size, -1)
 		reward = self.__rewards[self.__batch_indices, agent]
 		isTerminal = self.__isTerminal[self.__batch_indices]
 		hidden_state = self.__hidden_states_critic[:,  self.__batch_indices, agent]
