@@ -142,7 +142,7 @@ class actorCriticAgent:
         actor_actions_tensor = torch.tensor(actor_actions).to(self.device, dtype=torch.float32)
         logprob = dist.log_prob(actor_actions_tensor)
 
-        actor_loss = torch.mean((-logprob) * critic_target)
+        actor_loss = torch.mean((-logprob) * (critic_target - value.detach()))
         actor_loss.backward()
         self.actor_optim.step()
 
