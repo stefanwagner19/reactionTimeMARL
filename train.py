@@ -14,7 +14,7 @@ from normalization import NoNormalization, RunningNormalization
 parser = argparse.ArgumentParser()
 parser.add_argument("--exp_name", type=str, required=True)
 parser.add_argument("--buffer_len", type=int, default=5000)
-parser.add_argument("--epochs", type=int, default=10000)
+parser.add_argument("--epochs", type=int, default=100000)
 parser.add_argument("--batch_size", type=int, default=128)
 parser.add_argument("--reaction_time", type=int, default=0)
 parser.add_argument("--steps_per_epoch", type=int, default=10)
@@ -24,6 +24,7 @@ parser.add_argument("--lr", type=float, default=3e-4)
 parser.add_argument("--gamma", type=float, default=0.99)
 parser.add_argument("--model_base_dir", type=str, default="models")
 parser.add_argument("--tensorboard_dir", type=str, default="tensorboard")
+parser.add_argument("--port", type=int, default=5005)
 parser.add_argument("--gpu", action="store_true")
 parser.add_argument("--no_graphics", action="store_true")
 parser.add_argument("--running_normalization", action="store_true")
@@ -39,7 +40,7 @@ else:
 
 device = torch.device("cuda" if torch.cuda.is_available() and args.gpu else "cpu")
 
-env = Multiroller(no_graphics=args.no_graphics)
+env = Multiroller(base_port=args.port, no_graphics=args.no_graphics)
 
 replay_buffer = ReplayBuffer(num_agents=env.get_num_agents(),
 							 max_len=args.buffer_len,
