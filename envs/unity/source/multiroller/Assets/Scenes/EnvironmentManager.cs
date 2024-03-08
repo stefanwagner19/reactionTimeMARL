@@ -6,13 +6,13 @@ public class EnvironmentManager : MonoBehaviour
     public Rigidbody2D agent2;
     public Rigidbody2D plank;
 
-    private bool environmentNeedsReset = true;
+    private int agentsFinished = 0;
 
     public void ResetEnvironmentIfNeeded()
     {
-        if (environmentNeedsReset)
+        if (agentsFinished >= 2)
         {
-            environmentNeedsReset = false;
+            agentsFinished = 0;
 
             // reset agent1
             agent1.angularVelocity = 0;
@@ -32,9 +32,9 @@ public class EnvironmentManager : MonoBehaviour
         }
     }
 
-    public void EnableEnvironmentReset()
+    public void agentCompleted()
     {
-        environmentNeedsReset = true;
+        agentsFinished += 1;
     }
 
 }

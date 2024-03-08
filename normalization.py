@@ -8,21 +8,22 @@ import torch
 class Normalization(abc.ABC):
 
 	def __init__(self, feature_shape: tuple[int]) -> Self:
+		self._feature_shape = feature_shape
 
 	def normalize(self, x: Union[torch.FloatTensor, torch.cuda.FloatTensor], doUpdate: bool = False) -> tuple[Union[torch.FloatTensor, torch.cuda.FloatTensor]]:
 		if doUpdate:
-			self.__update(x)
-		return self.__normalize(x)
+			self._update(x)
+		return self._normalize(x)
 
 	@abc.abstractmethod
-	def __normalize(self, x: Union[torch.FloatTensor, torch.cuda.FloatTensor]) -> tuple[Union[torch.FloatTensor, torch.cuda.FloatTensor]]:
+	def _normalize(self, x: Union[torch.FloatTensor, torch.cuda.FloatTensor]) -> tuple[Union[torch.FloatTensor, torch.cuda.FloatTensor]]:
 		pass
 
 	@abc.abstractmethod
-	def __update(self, x: Union[torch.FloatTensor, torch.cuda.FloatTensor]) -> None:
+	def _update(self, x: Union[torch.FloatTensor, torch.cuda.FloatTensor]) -> None:
 		pass
 
-	@abstractmethod
+	@abc.abstractmethod
 	def to(self, *args: any, **kwargs: dict[str, any]) -> None:
 		pass
 
@@ -32,10 +33,10 @@ class NoNormalization(Normalization):
 	def __init__(self, feature_shape: tuple[int]) -> Self:
 		super(NoNormalization, self).__init__(feature_shape)
 
-	def __normalize(self, x: Union[torch.FloatTensor, torch.cuda.FloatTensor]) -> tuple[Union[torch.FloatTensor, torch.cuda.FloatTensor]]:
+	def _normalize(self, x: Union[torch.FloatTensor, torch.cuda.FloatTensor]) -> tuple[Union[torch.FloatTensor, torch.cuda.FloatTensor]]:
 		return x
 
-	def __update(self, x: Union[torch.FloatTensor, torch.cuda.FloatTensor]) -> None:
+	def _update(self, x: Union[torch.FloatTensor, torch.cuda.FloatTensor]) -> None:
 		pass
 
 	def to(self, *args: any, **kwargs: dict[str, any]) -> None:
@@ -52,10 +53,10 @@ class RunningNormalization(Normalization):
 		self.var = torch.ones(self._feature_shape)
 		self.std = torch.ones(self._feature_shape)
 
-	def __normalize(self, x: Union[torch.FloatTensor, torch.cuda.FloatTensor]) -> tuple[Union[torch.FloatTensor, torch.cuda.FloatTensor]]:
+	def _normalize(self, x: Union[torch.FloatTensor, torch.cuda.FloatTensor]) -> tuple[Union[torch.FloatTensor, torch.cuda.FloatTensor]]:
 		return (x - self.mean) / self.std
 
-	def __update(self, x: Union[torch.FloatTensor, torch.cuda.FloatTensor]) -> None:
+	def _update(self, x: Union[torch.FloatTensor, torch.cuda.FloatTensor]) -> None:
 		'''
 		based on Welford's algorithm
 		https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Parallel_algorithm
@@ -77,7 +78,7 @@ class RunningNormalization(Normalization):
 		self.__count = new_count
 
 	def to(self, *args: any, **kwargs: dict[str, any]) -> None:
-		self.__normalization.mean = self.__normalization.mean.to(*args, **kwargs)
-		self.__normalization.var = self.__normalization.var.to(*args, **kwargs)
-		self.__normalization.std = self.__normalization.std.to(*args, **kwargs)
+		self.mean = self.mean.to(*args, **kwargs)
+		self.var = self.var.to(*args, **kwargs)
+		self.std = self.std.to(*args, **kwargs)
 		

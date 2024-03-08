@@ -14,8 +14,19 @@ from mlagents_envs.base_env import ActionTuple
 
 class Env(abc.ABC):
 
-    def __init__(self) -> Self:
-        pass
+    def __init__(self, n_agents: int, n_actions: int, n_obs: int) -> Self:
+        self._n_agents = n_agents
+        self._n_actions = n_actions
+        self._n_obs = n_obs
+
+    def get_num_agents(self) -> int:
+        return self._n_agents
+
+    def get_num_actions(self) -> int:
+        return self._n_actions
+
+    def get_num_obs(self) -> int:
+        return self._n_obs
 
     @abc.abstractmethod
     def reset(self) -> None:
@@ -49,7 +60,7 @@ class Env(abc.ABC):
 class Multiroller(Env):
 
     def __init__(self, **kwargs: dict[str, any]) -> Self:
-        super(Multiroller, self).__init__()
+        super(Multiroller, self).__init__(n_agents=2, n_actions=4, n_obs=9)
         if platform.system() == "Linux":
             version = "multiroller_LIN"
         elif platform.system() == "Windows":
@@ -58,7 +69,7 @@ class Multiroller(Env):
             print("MAC not implemented yet!")
             quit()
         self.__env_path = os.path.join("envs", "unity", "build", version, "multiroller")
-        self.__env= UnityEnvironment(file_name=self.__env_path)
+        self.__env= UnityEnvironment(file_name=self.__env_path, **kwargs)
         self.__env.reset()
         self.__isTerminal = False
         self.__agents = list(self.__env.behavior_specs)
@@ -102,12 +113,9 @@ class Multiroller(Env):
             decision_steps, terminal_steps = self.__env.get_steps(agent)
             if len(terminal_steps) > 0:
                 steps = terminal_steps
+                self.__isTerminal = True
             else:
                 steps = decision_steps
-            self.__isTerminal = True
-            print(i)
-            print(steps.obs)
-            print(steps.reward)
             self.__obs[i] = steps.obs[0]
             self.__reward[i] = steps.reward[0]
 
@@ -120,7 +128,7 @@ if __name__ == "__main__":
     env.reset()
 
     for i in range(1000):
-
+        print(i)
         if env.is_terminal():
             env.reset()
 
