@@ -86,7 +86,7 @@ class ReplayBuffer(object):
 		if self.__max_len > self.__total_counter - 1:
 			potential_indices = np.arange(self.__total_counter - 1)
 		else:
-			potential_indices = np.concatenate((np.arange(0, self.__counter - 1), np.arange(self._counter, self.max_len))) 
+			potential_indices = np.concatenate((np.arange(0, self.__counter - 1), np.arange(self.__counter, self.max_len))) 
 		self.__batch_indices = np.random.choice(potential_indices, self.__batch_size)
 
 	def retrieve_actor_info(self, agent: int) -> tuple[npt.NDArray]:
