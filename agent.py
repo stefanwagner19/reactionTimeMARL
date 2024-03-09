@@ -50,16 +50,17 @@ class actorCriticAgent:
             checkpoint_actor = torch.load(os.path.join(model_dir, f"{epoch}_{id}_actor"))
             self.actor.load_state_dict(checkpoint_actor["model_state_dict"])
             self.actor_optim.load_state_dict(checkpoint_actor["optimizer_state_dict"])
-            self.actor._normalization(checkpoint_actor["normalization"])
+            self.actor._normalization = checkpoint_actor["normalization"]
             self.actor.to(self.device, dtype=torch.float32)
 
             checkpoint_critic = torch.load(os.path.join(model_dir, f"{epoch}_{id}_critic"))
             self.critic.load_state_dict(checkpoint_critic["model_state_dict"])
             self.critic_optim.load_state_dict(checkpoint_critic["optimizer_state_dict"])
-            self.critic._normalization(checkpoint_critic["normalization"])
+            self.critic._normalization = checkpoint_critic["normalization"]
             self.critic.to(self.device, dtype=torch.float32)
             print("### Load successful")
-        except:
+        except Exception as e:
+            print(e)
             print("XXX Load failed")
 
 
