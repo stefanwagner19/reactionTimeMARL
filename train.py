@@ -1,6 +1,7 @@
 import os
 import argparse
 import tqdm
+import random
 
 import torch
 import numpy as np
@@ -22,6 +23,7 @@ parser.add_argument("--hidden_size", type=int, default=16)
 parser.add_argument("--num_layers", type=int, default=2)
 parser.add_argument("--lr", type=float, default=3e-4)
 parser.add_argument("--gamma", type=float, default=0.99)
+parser.add_argument("--eps", type=float, default=0.0)
 parser.add_argument("--model_base_dir", type=str, default="models")
 parser.add_argument("--tensorboard_dir", type=str, default="tensorboard")
 parser.add_argument("--port", type=int, default=5005)
@@ -98,7 +100,12 @@ for e in tqdm.tqdm(range(1, args.epochs + 1)):
 		# perform step for actor
 		for i, agent in enumerate(agents):
 			action, h_actor_new, c_actor_new = agent.chooseAction(actor_obs[i], h_actor[i], c_actor[i])
-			actions[i, action] = 1
+			# do exploration
+			if random.random() > args.eps:
+				actions[i, action] = 1
+			else:
+				actions[i, random.randint(0, env.get_num_actions() - 1)] = 1
+			
 			replay_buffer.store_actor_info(i, actions[i], obs[i], h_actor[i], c_actor[i])
 			h_actor[i] = h_actor_new
 			c_actor[i] = c_actor_new
