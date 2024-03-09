@@ -28,6 +28,7 @@ parser.add_argument("--port", type=int, default=5005)
 parser.add_argument("--gpu", action="store_true")
 parser.add_argument("--no_graphics", action="store_true")
 parser.add_argument("--running_normalization", action="store_true")
+parser.add_argument("--clip_reward", action="store_true")
 
 args = parser.parse_args()
 
@@ -107,6 +108,8 @@ for e in tqdm.tqdm(range(1, args.epochs + 1)):
 		env.update()
 
 		reward = env.get_reward()
+		if args.clip_reward:
+			reward = np.clip(reward*10, -1, 1)
 		reward_modifier *= args.gamma
 		episode_reward += reward_modifier * reward[0].squeeze()
 		
