@@ -66,8 +66,7 @@ class Multiroller(Env):
         elif platform.system() == "Windows":
             version = "multiroller_WIN"
         else:
-            print("MAC not implemented yet!")
-            quit()
+            version = "multiroller_MAC"
         self.__env_path = os.path.join("envs", "unity", "build", version, "multiroller")
         self.__env= UnityEnvironment(file_name=self.__env_path, **kwargs)
         self.__env.reset()
