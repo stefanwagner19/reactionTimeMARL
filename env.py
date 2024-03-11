@@ -66,7 +66,7 @@ class Multiroller(Env):
         elif platform.system() == "Windows":
             self.__env_path = os.path.join("envs", "unity", "build", "multiroller_WIN", "multiroller")
         else:
-            self.__env_path = os.path.join("envs", "unity", "build", "multiroller_MAC", "multiroller.app")
+            self.__env_path = os.path.join("envs", "unity", "build", "multiroller_MAC", "multiroller_MAC.app")
         
         self.__env= UnityEnvironment(file_name=self.__env_path, **kwargs)
         self.__env.reset()
