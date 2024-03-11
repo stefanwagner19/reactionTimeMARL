@@ -62,12 +62,12 @@ class Multiroller(Env):
     def __init__(self, **kwargs: dict[str, any]) -> Self:
         super(Multiroller, self).__init__(n_agents=2, n_actions=4, n_obs=9)
         if platform.system() == "Linux":
-            version = "multiroller_LIN"
+            self.__env_path = os.path.join("envs", "unity", "build", "multiroller_LIN", "multiroller")
         elif platform.system() == "Windows":
-            version = "multiroller_WIN"
+            self.__env_path = os.path.join("envs", "unity", "build", "multiroller_WIN", "multiroller")
         else:
-            version = "multiroller_MAC"
-        self.__env_path = os.path.join("envs", "unity", "build", version, "multiroller")
+            self.__env_path = os.path.join("envs", "unity", "build", "multiroller_MAC", "multiroller.app")
+        
         self.__env= UnityEnvironment(file_name=self.__env_path, **kwargs)
         self.__env.reset()
         self.__isTerminal = False
