@@ -1,4 +1,6 @@
-**/models/
+**/models/*
+!models/sampleModels/
+!models/sampleModels/**/*
 
 **/[Tt]emp/
 **/[Oo]bj/

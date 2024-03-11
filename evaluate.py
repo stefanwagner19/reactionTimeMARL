@@ -11,17 +11,17 @@ from replay_buffer import ReplayBuffer
 from normalization import NoNormalization, RunningNormalization
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--exp_name", type=str, required=True)
-parser.add_argument("--epoch", type=int, required=True)
-parser.add_argument("--run_for", type=int, default=1000)
-parser.add_argument("--reaction_time", type=int, default=0)
-parser.add_argument("--hidden_size", type=int, default=16)
-parser.add_argument("--num_layers", type=int, default=2)
-parser.add_argument("--gamma", type=float, default=0.99)
-parser.add_argument("--model_base_dir", type=str, default="models")
-parser.add_argument("--port", type=int, default=5005)
-parser.add_argument("--gpu", action="store_true")
-parser.add_argument("--running_normalization", action="store_true")
+parser.add_argument("--exp_name", type=str, required=True, help="Name of experiment. Use the directory name of the model you are trying to load.")
+parser.add_argument("--epoch", type=int, required=True, help="Name of experiment. Use the directory name of the model you are trying to load.")
+parser.add_argument("--run_for", type=int, default=1000, help="Set how many steps you want the evaluation to run. Note: It's steps, not episodes.")
+parser.add_argument("--reaction_time", type=int, default=0, help="Reaction delay imposed on actor models. Setting reaction_time=0 corresponds to perceived frame delay.")
+parser.add_argument("--hidden_size", type=int, default=16, help="Size of the LSTM's hidden layer for all models.")
+parser.add_argument("--num_layers", type=int, default=2, help="Number of LSTM layers for all models.")
+parser.add_argument("--gamma", type=float, default=0.99, help="Discount factor.")
+parser.add_argument("--model_base_dir", type=str, default="models", help="Path to parent directory where models will be loaded from.")
+parser.add_argument("--port", type=int, default=5005, help="ML-Agents port. Setting different ports is necessary when trying to run multiple instances of ML-Agents on same machine.")
+parser.add_argument("--gpu", action="store_true", help="Set this flag if you want to try to run the models on GPU.")
+parser.add_argument("--running_normalization", action="store_true", help="Run a running normalization on all model inputs.")
 
 try:
 	buffer_len = 1000
