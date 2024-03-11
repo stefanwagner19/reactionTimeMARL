@@ -47,13 +47,13 @@ class actorCriticAgent:
 
     def load_agent(self, model_dir, id, epoch):
         try:
-            checkpoint_actor = torch.load(os.path.join(model_dir, f"{epoch}_{id}_actor"))
+            checkpoint_actor = torch.load(os.path.join(model_dir, f"{epoch}_{id}_actor"), map_location=self.device)
             self.actor.load_state_dict(checkpoint_actor["model_state_dict"])
             self.actor_optim.load_state_dict(checkpoint_actor["optimizer_state_dict"])
             self.actor._normalization = checkpoint_actor["normalization"]
             self.actor.to(self.device, dtype=torch.float32)
 
-            checkpoint_critic = torch.load(os.path.join(model_dir, f"{epoch}_{id}_critic"))
+            checkpoint_critic = torch.load(os.path.join(model_dir, f"{epoch}_{id}_critic"), map_location=self.device)
             self.critic.load_state_dict(checkpoint_critic["model_state_dict"])
             self.critic_optim.load_state_dict(checkpoint_critic["optimizer_state_dict"])
             self.critic._normalization = checkpoint_critic["normalization"]
